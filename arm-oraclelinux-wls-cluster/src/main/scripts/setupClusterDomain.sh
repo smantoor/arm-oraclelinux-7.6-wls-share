@@ -765,8 +765,10 @@ function enableAndStartAdminServerService()
 function updateIPtables()
 {
 # Save the existing iptables rules
+echo "Saving the existing iptables rules to /etc/iptables.rules"
 sudo iptables-save > /etc/iptables.rules
-sudp iptables -D INPUT -j REJECT --reject-with icmp-host-prohibited
+echo "Deleting rule INPUT -j REJECT --reject-with icmp-host-prohibited"
+sudo iptables -D INPUT -j REJECT --reject-with icmp-host-prohibited
 #sudo iptables -P INPUT ACCEPT
 #sudo iptables -P FORWARD ACCEPT
 #sudo iptables -P OUTPUT ACCEPT
