@@ -762,7 +762,7 @@ function enableAndStartAdminServerService()
 
 }
 
-function cleanupIPtables()
+function updateIPtables()
 {
 # Save the existing iptables rules
 sudo iptables-save > /etc/iptables.rules
@@ -821,7 +821,7 @@ chmod ugo+x ${SCRIPT_PWD}/oradown.sh
 addOracleGroupAndUser
 
 cleanup
-#cleanupIPtables
+updateIPtables
 
 setupInstallPath
 
