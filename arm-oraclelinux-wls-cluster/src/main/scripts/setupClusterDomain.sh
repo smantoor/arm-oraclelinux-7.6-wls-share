@@ -769,7 +769,7 @@ echo "Saving the existing iptables rules to /etc/iptables.rules"
 sudo iptables-save > /etc/iptables.rules
 echo "Deleting rule INPUT -j REJECT --reject-with icmp-host-prohibited"
 sudo iptables -D INPUT -j REJECT --reject-with icmp-host-prohibited
-sudo iptables-save > /etc/updatediptables.rules
+sudo service iptables save
 #sudo iptables -P INPUT ACCEPT
 #sudo iptables -P FORWARD ACCEPT
 #sudo iptables -P OUTPUT ACCEPT
