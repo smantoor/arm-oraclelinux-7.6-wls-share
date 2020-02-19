@@ -818,7 +818,7 @@ chmod ugo+x ${SCRIPT_PWD}/oradown.sh
 addOracleGroupAndUser
 
 cleanup
-cleanupIPtables
+#cleanupIPtables
 
 setupInstallPath
 
