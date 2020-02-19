@@ -764,13 +764,16 @@ function enableAndStartAdminServerService()
 
 function cleanupIPtables()
 {
-sudo iptables -P INPUT ACCEPT
-sudo iptables -P FORWARD ACCEPT
-sudo iptables -P OUTPUT ACCEPT
-sudo iptables -t nat -F
-sudo iptables -t mangle -F
-sudo iptables -F
-sudo iptables -X
+# Save the existing iptables rules
+sudo iptables-save > /etc/iptables.rules
+sudp iptables -D INPUT -j REJECT --reject-with icmp-host-prohibited
+#sudo iptables -P INPUT ACCEPT
+#sudo iptables -P FORWARD ACCEPT
+#sudo iptables -P OUTPUT ACCEPT
+#sudo iptables -t nat -F
+#sudo iptables -t mangle -F
+#sudo iptables -F
+#sudo iptables -X
 }
 
 #main script starts here
