@@ -852,7 +852,6 @@ then
   enableAndStartAdminServerService
   wait_for_admin
 else
-  sleep 1m
   create_managedSetup
   create_nodemanager_service
   enabledAndStartNodeManagerService
