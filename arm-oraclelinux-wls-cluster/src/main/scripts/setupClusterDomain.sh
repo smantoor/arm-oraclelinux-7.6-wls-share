@@ -762,21 +762,15 @@ function enableAndStartAdminServerService()
 
 }
 
-function updateIPtables()
+function updateNetworkRules()
 {
-# Save the existing iptables rules
-echo "Saving the existing iptables rules to /etc/iptables.rules"
-sudo iptables-save > /etc/iptables.rules
-echo "Deleting rule INPUT -j REJECT --reject-with icmp-host-prohibited"
-sudo iptables -D INPUT -j REJECT --reject-with icmp-host-prohibited
-sudo service iptables save
-#sudo iptables -P INPUT ACCEPT
-#sudo iptables -P FORWARD ACCEPT
-#sudo iptables -P OUTPUT ACCEPT
-#sudo iptables -t nat -F
-#sudo iptables -t mangle -F
-#sudo iptables -F
-#sudo iptables -X
+echo "Update network rules with required ports"
+sudo firewall-cmd --zone=public --add-port=$wlsAdminPort/tcp
+sudo firewall-cmd --zone=public --add-port=$wlsSSLAdminPort/tcp
+sudo firewall-cmd --zone=public --add-port=$wlsManagedPort/tcp
+sudo firewall-cmd --zone=public --add-port=$nmPort/tcp
+sudo firewall-cmd --runtime-to-permanent
+sudo systemctl restart firewalld
 }
 
 #main script starts here
@@ -824,7 +818,7 @@ chmod ugo+x ${SCRIPT_PWD}/oradown.sh
 addOracleGroupAndUser
 
 cleanup
-updateIPtables
+updateNetworkRules
 
 setupInstallPath
 
