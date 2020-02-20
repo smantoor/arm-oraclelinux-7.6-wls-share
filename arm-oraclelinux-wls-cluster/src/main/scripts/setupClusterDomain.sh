@@ -771,6 +771,7 @@ sudo firewall-cmd --zone=public --add-port=$wlsManagedPort/tcp
 sudo firewall-cmd --zone=public --add-port=$nmPort/tcp
 sudo firewall-cmd --runtime-to-permanent
 sudo systemctl restart firewalld
+sleep 1m
 }
 
 #main script starts here
