@@ -1,7 +1,7 @@
 # arm-oraclelinux-wls-cluster
  Simple deployment of a Weblogic Cluster Domain on multiple Oracle Linux VMs with Weblogic Server pre-installed
 
-This template allows us to deploy Weblogic Cluster Domain on multiple Oracle Linux 7.6 VMs with Weblogic Server (12.2.1.3.0) pre-installed. 
+This template allows us to deploy Weblogic Cluster Domain on multiple Oracle Linux VMs with Weblogic Server (12.2.1.3.0) pre-installed. 
 This template deploy by default, an A3 size VM in the resource group location and return the fully qualified domain name of the VM.
 
 To install Weblogic Server, requires Oracle Weblogic Install kit and Oracle JDK to be downloaded, from OTN Site (https://www.oracle.com/technical-resources/). The OTN site requires the user to accept <a href="https://www.oracle.com/downloads/licenses/standard-license.html">OTN Free Developer License Agreement</a> before downloading any resources. 
