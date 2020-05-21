@@ -821,7 +821,7 @@ function copySerializedSystemIniFileToShare()
 {
   runuser -l oracle -c "cp ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat ${mountpointPath}/."
   ls -lt ${mountpointPath}/SerializedSystemIni.dat
-  if [[ $? == 0 ]]; 
+  if [[ $? != 0 ]]; 
   then
       echo "Failed to copy ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat"
       exit 1
@@ -834,9 +834,9 @@ function getSerializedSystemIniFileFromShare()
   runuser -l oracle -c "mv ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat.backup"
   runuser -l oracle -c "cp ${mountpointPath}/SerializedSystemIni.dat ${DOMAIN_PATH}/${wlsDomainName}/security/."
   ls -lt ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat
-  if [[ $? == 0 ]]; 
+  if [[ $? != 0 ]]; 
   then
-      echo "Unabel to get ${mountpointPath}/SerializedSystemIni.dat"
+      echo "Failed to get ${mountpointPath}/SerializedSystemIni.dat"
       exit 1
   fi
   runuser -l oracle -c "chmod 640 ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat"
