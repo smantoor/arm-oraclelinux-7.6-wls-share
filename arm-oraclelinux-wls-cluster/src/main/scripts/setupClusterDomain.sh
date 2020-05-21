@@ -300,6 +300,7 @@ function cleanup()
     rm -rf $DOMAIN_PATH/deploy-app.yaml
     rm -rf $DOMAIN_PATH/shoppingcart.zip
     rm -rf $DOMAIN_PATH/*.py
+    sudo rm -rf $mountpointPath/SerializedSystemIni.dat
     echo "Cleanup completed."
 }
 
@@ -819,8 +820,12 @@ function mountFileShare()
 function copySerializedSystemIniFileToShare()
 {
   runuser -l oracle -c "cp ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat ${mountpointPath}/."
-  ls -lt ${mountpointPath}
-  echo $?
+  ls -lt ${mountpointPath}/SerializedSystemIni.dat
+  if [[ $? == 0 ]]; 
+  then
+      echo "Failed to copy ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat"
+      exit 1
+  fi
 }
 
 # Get SerializedSystemIni.dat file from share point to managed server vm
@@ -828,8 +833,13 @@ function getSerializedSystemIniFileFromShare()
 {
   runuser -l oracle -c "mv ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat.backup"
   runuser -l oracle -c "cp ${mountpointPath}/SerializedSystemIni.dat ${DOMAIN_PATH}/${wlsDomainName}/security/."
-  ls -lt ${mountpointPath}
-  echo $?
+  ls -lt ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat
+  if [[ $? == 0 ]]; 
+  then
+      echo "Unabel to get ${mountpointPath}/SerializedSystemIni.dat"
+      exit 1
+  fi
+  runuser -l oracle -c "chmod 640 ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat"
 }
 
 
