@@ -792,7 +792,13 @@ export wlsUserName=$5
 export wlsPassword=$6
 export wlsServerName=$7
 export wlsAdminHost=$8
+export storageAccountName=$9
+export storageAccountKey=${10}
+export mountpointPath=${11}
 
+echo "storageAccountName:$storageAccountName"
+echo "storageAccountKey:$storageAccountKey"
+echo "mountpointPath:$mountpointPath"
 
 validateInput
 
