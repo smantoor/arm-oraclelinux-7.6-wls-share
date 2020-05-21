@@ -778,7 +778,7 @@ sudo systemctl restart firewalld
 CURR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export BASE_DIR="$(readlink -f ${CURR_DIR})"
 
-if [ $# -ne 8 ]
+if [ $# -ne 11 ]
 then
     usage
 	exit 1
