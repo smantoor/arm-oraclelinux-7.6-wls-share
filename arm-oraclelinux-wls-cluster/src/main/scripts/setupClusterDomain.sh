@@ -764,13 +764,29 @@ function enableAndStartAdminServerService()
 
 function updateNetworkRules()
 {
-echo "Update network rules with required ports"
-sudo firewall-cmd --zone=public --add-port=$wlsAdminPort/tcp
-sudo firewall-cmd --zone=public --add-port=$wlsSSLAdminPort/tcp
-sudo firewall-cmd --zone=public --add-port=$wlsManagedPort/tcp
-sudo firewall-cmd --zone=public --add-port=$nmPort/tcp
-sudo firewall-cmd --runtime-to-permanent
-sudo systemctl restart firewalld
+  echo "Update network rules with required ports"
+  sudo firewall-cmd --zone=public --add-port=$wlsAdminPort/tcp
+  sudo firewall-cmd --zone=public --add-port=$wlsSSLAdminPort/tcp
+  sudo firewall-cmd --zone=public --add-port=$wlsManagedPort/tcp
+  sudo firewall-cmd --zone=public --add-port=$nmPort/tcp
+  sudo firewall-cmd --runtime-to-permanent
+  sudo systemctl restart firewalld
+}
+
+function mountFileShare()
+{
+  echo "Creating mount point"
+  sudo mkdir -p $mountpointPath
+  if [ ! -d "/etc/smbcredentials" ]; then
+    sudo mkdir /etc/smbcredentials
+  fi
+  if [ ! -f "/etc/smbcredentials/218316olvm.cred" ]; then
+    sudo bash -c 'echo "username=$storageAccountName >> /etc/smbcredentials/$storageAccountName.cred'
+    sudo bash -c 'echo "password=$storageAccountKey >> /etc/smbcredentials/$storageAccountName.cred'
+  fi
+  sudo chmod 600 /etc/smbcredentials/$storageAccountName.cred
+  sudo bash -c 'echo "//$storageAccountName.file.core.windows.net/wlsshare $mountpointPath cifs nofail,vers=3.0,credentials=/etc/smbcredentials/$storageAccountName.cred ,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
+  sudo mount -t cifs //$storageAccountName.file.core.windows.net/wlsshare $mountpointPath -o vers=3.0,credentials=/etc/smbcredentials/$storageAccountName.cred,dir_mode=0777,file_mode=0777,serverino
 }
 
 #main script starts here
