@@ -776,17 +776,25 @@ function updateNetworkRules()
 function mountFileShare()
 {
   echo "Creating mount point"
+  echo "Mount point: $mountpointPath"
+  echo "storageAccountName : $storageAccountName"
+  echo "storageAccountKey : $storageAccountKey"
   sudo mkdir -p $mountpointPath
   if [ ! -d "/etc/smbcredentials" ]; then
     sudo mkdir /etc/smbcredentials
   fi
-  if [ ! -f "/etc/smbcredentials/218316olvm.cred" ]; then
-    sudo bash -c 'echo "username=$storageAccountName >> /etc/smbcredentials/$storageAccountName.cred'
-    sudo bash -c 'echo "password=$storageAccountKey >> /etc/smbcredentials/$storageAccountName.cred'
+  if [ ! -f "/etc/smbcredentials/${storageAccountName}.cred" ]; then
+    echo "Crearing smbcredentials"
+    echo "username=$storageAccountName >> /etc/smbcredentials/${storageAccountName}.cred"
+    echo "password=$storageAccountKey" >> /etc/smbcredentials/${storageAccountName}.cred"
+    sudo bash -c 'echo "username=$storageAccountName" >> /etc/smbcredentials/${storageAccountName}.cred'
+    sudo bash -c 'echo "password=$storageAccountKey" >> /etc/smbcredentials/${storageAccountName}.cred'
   fi
-  sudo chmod 600 /etc/smbcredentials/$storageAccountName.cred
-  sudo bash -c 'echo "//$storageAccountName.file.core.windows.net/wlsshare $mountpointPath cifs nofail,vers=3.0,credentials=/etc/smbcredentials/$storageAccountName.cred ,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
-  sudo mount -t cifs //$storageAccountName.file.core.windows.net/wlsshare $mountpointPath -o vers=3.0,credentials=/etc/smbcredentials/$storageAccountName.cred,dir_mode=0777,file_mode=0777,serverino
+  echo "chmod 600 /etc/smbcredentials/${storageAccountName}.cred"
+  sudo chmod 600 /etc/smbcredentials/${storageAccountName}.cred
+  echo "//$storageAccountName.file.core.windows.net/wlsshare $mountpointPath cifs nofail,vers=3.0,credentials=/etc/smbcredentials/${storageAccountName}.cred ,dir_mode=0777,file_mode=0777,serverino"
+  sudo bash -c 'echo "//$storageAccountName.file.core.windows.net/wlsshare $mountpointPath cifs nofail,vers=3.0,credentials=/etc/smbcredentials/${storageAccountName}.cred ,dir_mode=0777,file_mode=0777,serverino" >> /etc/fstab'
+  sudo mount -t cifs //$storageAccountName.file.core.windows.net/wlsshare $mountpointPath -o vers=3.0,credentials=/etc/smbcredentials/${storageAccountName}.cred,dir_mode=0777,file_mode=0777,serverino
 }
 
 #main script starts here
@@ -843,11 +851,11 @@ cleanup
 
 updateNetworkRules
 
-mountFileShare
-
 setupInstallPath
 
 installUtilities
+
+mountFileShare
 
 downloadJDK
 
