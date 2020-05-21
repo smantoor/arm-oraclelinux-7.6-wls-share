@@ -392,13 +392,12 @@
 				"type": "CustomScript",
 				"typeHandlerVersion": "2.0",
 				"autoUpgradeMinorVersion": true,
-				"storageAccountKey": "[listKeys(variables('storageAccountId'), '2019-04-01').keys[0].value]",
 				"settings": {
 					"fileUris": [
 						"https://raw.githubusercontent.com/sanjaymantoor/arm-oraclelinux-7.6-wls-share/master/arm-oraclelinux-wls-cluster/src/main/scripts/setupClusterDomain.sh",
 						"https://raw.githubusercontent.com/sanjaymantoor/arm-oraclelinux-7.6-wls-share/master/arm-oraclelinux-wls-cluster/src/main/scripts/oradown.sh"
 					],
-					"commandToExecute": "[concat('sh',' ',variables('ScriptFileName'),' ',parameters('acceptOTNLicenseAgreement'),' ',parameters('otnAccountUsername'),' ',parameters('otnAccountPassword'),' ',parameters('wlsDomainName'),' ',parameters('wlsUserName'),' ',parameters('wlsPassword'),' ',if(equals(copyIndex(),0),'admin',concat(parameters('managedServerPrefix'), copyIndex())),' ',parameters('adminVMName'),' ',variables('storageAccountName'),' ',variables('storageAccountKey'),' ',variables('mountpointPath'))]"
+					"commandToExecute": "[concat('sh',' ',variables('ScriptFileName'),' ',parameters('acceptOTNLicenseAgreement'),' ',parameters('otnAccountUsername'),' ',parameters('otnAccountPassword'),' ',parameters('wlsDomainName'),' ',parameters('wlsUserName'),' ',parameters('wlsPassword'),' ',if(equals(copyIndex(),0),'admin',concat(parameters('managedServerPrefix'), copyIndex())),' ',parameters('adminVMName'),' ',variables('storageAccountName'),' ',listKeys(resourceId('Microsoft.Storage/storageAccounts',variables('storageAccountName'))),' ',variables('mountpointPath'))]"
 				}
 			}
 		}
