@@ -83,8 +83,8 @@ function modifyWLSClasspath()
 
 function installUtilities()
 {
-    echo "Installing zip unzip wget vnc-server rng-tools"
-    sudo yum install -y zip unzip wget vnc-server rng-tools
+    echo "Installing zip unzip wget vnc-server rng-tools cifs-utils"
+    sudo yum install -y zip unzip wget vnc-server rng-tools cifs-utils
 
     #Setting up rngd utils
     attempt=1
@@ -100,7 +100,7 @@ function installUtilities()
           break
        fi
        sleep 1m
-    done  
+    done    
 }
 
 function addOracleGroupAndUser()
