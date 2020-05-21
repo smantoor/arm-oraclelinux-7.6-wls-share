@@ -840,7 +840,10 @@ chmod ugo+x ${SCRIPT_PWD}/oradown.sh
 addOracleGroupAndUser
 
 cleanup
+
 updateNetworkRules
+
+mountFileShare
 
 setupInstallPath
 
