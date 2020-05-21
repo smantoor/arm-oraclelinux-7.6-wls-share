@@ -787,8 +787,8 @@ function mountFileShare()
     echo "Crearing smbcredentials"
     echo "username=$storageAccountName >> /etc/smbcredentials/${storageAccountName}.cred"
     echo "password=$storageAccountKey >> /etc/smbcredentials/${storageAccountName}.cred"
-    sudo bash -c 'echo "username=$storageAccountName" >> /etc/smbcredentials/${storageAccountName}.cred'
-    sudo bash -c 'echo "password=$storageAccountKey" >> /etc/smbcredentials/${storageAccountName}.cred'
+    sudo bash -c "echo "username=$storageAccountName" >> /etc/smbcredentials/${storageAccountName}.cred"
+    sudo bash -c "echo "password=$storageAccountKey" >> /etc/smbcredentials/${storageAccountName}.cred"
   fi
   echo "chmod 600 /etc/smbcredentials/${storageAccountName}.cred"
   sudo chmod 600 /etc/smbcredentials/${storageAccountName}.cred
