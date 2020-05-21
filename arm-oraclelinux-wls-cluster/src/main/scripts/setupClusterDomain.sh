@@ -9,7 +9,7 @@ function echo_stderr ()
 #Function to display usage message
 function usage()
 {
-  echo_stderr "./setupClusterDomain.sh <acceptOTNLicenseAgreement> <otnusername> <otnpassword> <wlsDomainName> <wlsUserName> <wlsPassword> <wlsServerName> <adminVMName>"  
+  echo_stderr "./setupClusterDomain.sh <acceptOTNLicenseAgreement> <otnusername> <otnpassword> <wlsDomainName> <wlsUserName> <wlsPassword> <wlsServerName> <adminVMName> <storageAccountName> <storageAccountKey> <mountpointPath>"  
 }
 
 
@@ -154,6 +154,22 @@ function validateInput()
     then
         echo_stderr "adminVMName is required. "
     fi
+    
+    if [ -z "$storageAccountName" ];
+    then 
+        echo_stderr "storageAccountName is required. "
+    fi
+    
+    if [ -z "$storageAccountKey" ];
+    then 
+        echo_stderr "storageAccountKey is required. "
+    fi
+    
+    if [ -z "$mountpointPath" ];
+    then 
+        echo_stderr "mountpointPath is required. "
+    fi
+    
 }
 
 # Download JDK for WLS
@@ -535,6 +551,7 @@ function create_adminSetup()
        echo "Error : Admin setup failed"
        exit 1
     fi
+    copySerializedSystemIniFileToShare
 }
 
 #Function to setup admin boot properties
@@ -676,6 +693,7 @@ function create_managedSetup(){
        exit 1
     fi
     wait_for_admin
+    getSerializedSystemIniFileFromShare
     echo "Adding machine to managed server $wlsServerName"
     runuser -l oracle -c "export JAVA_HOME=$JDK_PATH/jdk1.8.0_131 ; $INSTALL_PATH/Oracle/Middleware/Oracle_Home/oracle_common/common/bin/wlst.sh $DOMAIN_PATH/add-machine.py"
     if [[ $? != 0 ]]; then
@@ -797,6 +815,25 @@ function mountFileShare()
   sudo mount -t cifs //$storageAccountName.file.core.windows.net/wlsshare $mountpointPath -o vers=3.0,credentials=/etc/smbcredentials/${storageAccountName}.cred,dir_mode=0777,file_mode=0777,serverino
 }
 
+# Copy SerializedSystemIni.dat file from admin server vm to share point
+function copySerializedSystemIniFileToShare()
+{
+  runuser -l oracle -c "cp ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat ${mountpointPath}/."
+  ls -lt ${mountpointPath}
+  echo $?
+}
+
+# Get SerializedSystemIni.dat file from share point to managed server vm
+function getSerializedSystemIniFileFromShare()
+{
+  runuser -l oracle -c "mv ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat ${DOMAIN_PATH}/${wlsDomainName}/security/SerializedSystemIni.dat.backup"
+  runuser -l oracle -c "cp ${mountpointPath}/SerializedSystemIni.dat ${DOMAIN_PATH}/${wlsDomainName}/security/."
+  ls -lt ${mountpointPath}
+  echo $?
+}
+
+
+
 #main script starts here
 
 CURR_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -877,7 +914,7 @@ modifyWLSClasspath
 
 if [ $wlsServerName == "admin" ];
 then
-  create_adminSetup    
+  create_adminSetup
   create_nodemanager_service  
   admin_boot_setup  
   create_adminserver_service
