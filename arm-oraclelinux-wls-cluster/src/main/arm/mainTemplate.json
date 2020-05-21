@@ -164,7 +164,7 @@
 		"virtualNetworkName": "[concat(parameters('wlsDomainName'),'_VNET')]",
 		"oradownScript": "oradown.sh",
 		"ScriptFileName": "setupClusterDomain.sh",
-		"storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]",
+		"storageAccountId": "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
 		"storageAccountKey": "[listKeys(variables('storageAccountId'), '2019-04-01').keys[0].value]",
 		"mountpointPath" : "/mnt/wlsshare",
 		"linuxConfiguration": {
