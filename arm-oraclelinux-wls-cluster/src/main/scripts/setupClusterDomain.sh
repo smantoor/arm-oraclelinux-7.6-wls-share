@@ -300,7 +300,6 @@ function cleanup()
     rm -rf $DOMAIN_PATH/deploy-app.yaml
     rm -rf $DOMAIN_PATH/shoppingcart.zip
     rm -rf $DOMAIN_PATH/*.py
-    sudo rm -rf $mountpointPath/SerializedSystemIni.dat
     echo "Cleanup completed."
 }
 
