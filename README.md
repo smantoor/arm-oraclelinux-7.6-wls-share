@@ -94,4 +94,4 @@ If you are new to template deployment, see:
 ## Considerations for CI/CD
 
 Please see [the base project for this effort](https://github.com/edburns/arm-oraclelinux-wls#considerations-for-cicd).
-Testing 28 May 2020 9:27 AM
+Testing 28 May 2020 9:30 AM
